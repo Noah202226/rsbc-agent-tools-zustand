@@ -1,3 +1,4 @@
+"use client";
 import { useUserStore } from "../store/zustand";
 
 const Navbar = () => {
