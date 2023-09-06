@@ -1,22 +1,33 @@
 "use client";
 import { useUserStore } from "../store/zustand";
+import Login from "./Login";
 
 const Navbar = () => {
-  const { count } = useUserStore((state) => state);
+  const { user, isLoading, handleLogOut } = useUserStore((state) => state);
   return (
     <div className="fixed top-0 left-0 right-0 p-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <p>Logo</p>
+      {isLoading ? (
+        ""
+      ) : user ? (
+        <div className="flex items-center justify-between">
+          <div>
+            <p>Logo</p>
+          </div>
+          <div className="flex items-center justify-between w-1/4">
+            <p>Clients</p>
+            <p>Tools</p>
+            <p className="bg-slate-500 p-2 rounded-md hover:text-cyan-950 cursor-pointer">
+              Notifications:{" "}
+              <sup className="text-red-600 bg-gray-400 w-40 h-40 text-lg">
+                {1}
+              </sup>
+            </p>
+            <button onClick={handleLogOut}>Logout</button>
+          </div>
         </div>
-        <div className="flex items-center justify-between w-2/4">
-          <p>Clients</p>
-          <p>Tools</p>
-          <p className="bg-slate-500 p-2 rounded-sm">
-            Notifications: <sup className="text-red-600">{count}</sup>
-          </p>
-        </div>
-      </div>
+      ) : (
+        <Login />
+      )}
     </div>
   );
 };
