@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "./store/zustand";
 
 import Welcome from "./components/Welcome";
+import { addDoc, doc, setDoc } from "firebase/firestore";
+import { db } from "./firebase";
+import AddNewClient from "./components/modals/AddNewClient";
+import AllClients from "./components/AllClients";
 
 export default function Home() {
   const {
@@ -11,14 +15,20 @@ export default function Home() {
     auth,
     handleLogin,
     handleLogOut,
+
     userClients,
     subscribeToData,
   } = useUserStore((state) => state);
 
   const [addClientModal, setAddClientModal] = useState(false);
 
+  // Filter clients by user UID
+  const filteredClients = userClients.filter(
+    (client) => client.clientBy == user?.uid
+  );
+
   useEffect(() => {
-    console.log(user);
+    console.log(user, filteredClients);
     const unsubscribe = auth?.onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
@@ -37,13 +47,12 @@ export default function Home() {
   }, [user]);
 
   useEffect(() => {
-    console.log(userClients);
     const unsubscribe = subscribeToData();
     return () => {
       // Unsubscribe when the component unmounts
       unsubscribe();
     };
-  }, [userClients]);
+  }, []);
   return (
     <div className="mt-20">
       {isLoading ? (
@@ -79,43 +88,20 @@ export default function Home() {
           <p>User: {user?.displayName}</p>
           <p>ID: {user?.uid}</p>
 
-          <h1>Your Firestore Data:</h1>
+          <AllClients />
+          <h1>Your clients only:</h1>
           <ul>
-            {userClients.map((item) => (
-              <li key={item.id}>{item.name}</li>
-            ))}
+            {filteredClients.map((client) => {
+              console.log(client);
+              return <li key={client.id}>{client.clientName}</li>; // Adjust to display the client data structure
+            })}
           </ul>
 
           {addClientModal && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              {/* <!-- Modal backdrop --> */}
-              <div className="fixed inset-0 bg-gray-800 opacity-50"></div>
-
-              {/* <!-- Modal content --> */}
-              <div className="bg-white p-8 rounded-lg shadow-lg z-10">
-                {/* <!-- Modal header --> */}
-                <div className="text-xl font-semibold mb-4">Modal Title</div>
-
-                {/* <!-- Modal body --> */}
-                <p>This is a modal example created with Tailwind CSS.</p>
-
-                {/* <!-- Modal footer --> */}
-                <div className="mt-4 flex justify-end">
-                  <button
-                    onClick={() => setAddClientModal(!addClientModal)}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full mr-4"
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="bg-gray-400 hover:bg-gray-600 text-gray-800 font-semibold py-2 px-4 rounded-full"
-                    onClick={() => setAddClientModal(!addClientModal)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
+            <AddNewClient
+              addClientModal={addClientModal}
+              setAddClientModal={setAddClientModal}
+            />
           )}
 
           {/* <!-- Button to trigger modal --> */}

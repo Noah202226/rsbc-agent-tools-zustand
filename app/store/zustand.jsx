@@ -10,10 +10,13 @@ export const useUserStore = create((set, get) => ({
   // States
   isLoading: true,
   user: null,
-  auth: auth,
+  auth,
+
+  db,
   userClients: [],
 
   // Functions
+
   handleLogin: (user) => {
     set({ user, isLoading: false });
   },
@@ -29,11 +32,11 @@ export const useUserStore = create((set, get) => ({
   subscribeToData: () => {
     const dbRef = collection(db, "clients");
     return onSnapshot(dbRef, (querySnapshot) => {
-      const newData = [];
-      querySnapshot.forEach((doc) => {
-        newData.push({ id: doc.id, ...doc.data() });
-      });
-      set({ userClients: newData });
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      set({ userClients: data });
     });
   },
 }));

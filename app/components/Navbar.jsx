@@ -9,7 +9,7 @@ const Navbar = () => {
       {isLoading ? (
         ""
       ) : user ? (
-        <div className="flex items-center justify-between">
+        <div className="md:flex sm:block items-center justify-between">
           <div>
             <p>Logo</p>
           </div>
@@ -17,10 +17,7 @@ const Navbar = () => {
             <p>Clients</p>
             <p>Tools</p>
             <p className="bg-slate-500 p-2 rounded-md hover:text-cyan-950 cursor-pointer">
-              Notifications:{" "}
-              <sup className="text-red-600 bg-gray-400 w-40 h-40 text-lg">
-                {1}
-              </sup>
+              Notifications: <sup className="text-red-600">{1}</sup>
             </p>
             <button onClick={handleLogOut}>Logout</button>
           </div>
