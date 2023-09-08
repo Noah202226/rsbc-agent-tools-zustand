@@ -54,31 +54,12 @@ export default function Home() {
     };
   }, []);
   return (
-    <div className="mt-20">
+    <div className="mt-1">
       {isLoading ? (
         <div className="flex text-center justify-center h-full">
-          <div className="bg-opacity-70 text-center justify-center ">
-            <svg
-              className="animate-spin h-10 w-10 mr-3 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-50"
-                cx="10"
-                cy="10"
-                r="3"
-                stroke="currentColor"
-                strokeWidth="1"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.863 3.169 8.029l2.83-2.738z"
-              ></path>
-            </svg>
-          </div>
+          <span className="loading loading-dots loading-md"></span>
+          <span className="loading loading-dots loading-md"></span>
+          <span className="loading loading-dots loading-md"></span>
         </div>
       ) : user ? (
         <>
@@ -107,7 +88,8 @@ export default function Home() {
           {/* <!-- Button to trigger modal --> */}
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full"
-            onClick={() => setAddClientModal(true)}
+            // onClick={() => setAddClientModal(true)}
+            onClick={() => setAddClientModal(!addClientModal)}
           >
             Open Modal
           </button>
