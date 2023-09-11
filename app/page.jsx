@@ -67,6 +67,15 @@ export default function Home() {
           <AllClients />
           <p>User: {user?.displayName}</p>
 
+          {/* <!-- Button to trigger modal --> */}
+          <button
+            className="bg-emerald-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full "
+            // onClick={() => setAddClientModal(true)}
+            onClick={() => setAddClientModal(!addClientModal)}
+          >
+            Add New Client
+          </button>
+
           <label
             for="my-drawer"
             class="btn btn-primary drawer-button absolute right-0"
@@ -82,15 +91,6 @@ export default function Home() {
               setAddClientModal={setAddClientModal}
             />
           )}
-
-          {/* <!-- Button to trigger modal --> */}
-          <button
-            className="bg-emerald-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full"
-            // onClick={() => setAddClientModal(true)}
-            onClick={() => setAddClientModal(!addClientModal)}
-          >
-            Add New Client
-          </button>
         </>
       ) : (
         <Welcome />

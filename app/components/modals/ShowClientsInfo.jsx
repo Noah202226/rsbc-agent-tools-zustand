@@ -1,7 +1,7 @@
 "use client";
 import { useUserStore } from "@/app/store/zustand";
-import { deleteDoc, doc } from "firebase/firestore";
-import React from "react";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 
 const ShowClientsInfo = () => {
   const { db } = useUserStore((state) => state);
@@ -16,19 +16,77 @@ const ShowClientsInfo = () => {
     setShowUserClientInfoModal,
   } = useUserStore((state) => state);
 
+  const [userClientState, setUserClientState] = useState(null);
+
+  const updateUserClientInfo = () => {
+    setDoc(
+      doc(db, "clients", userClientInfo?.id),
+      { status: userClientState },
+      { merge: true }
+    )
+      .then(() => {
+        setShowUserClientInfoModal(null);
+        setUserClientState(userClientInfo?.status);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  useEffect(() => {
+    setUserClientState(userClientInfo?.status);
+  }, []);
   return (
     <dialog
       id="my_modal_2"
-      className={`modal ${showUserClientInfoModal ? "modal-open" : ""}`}
+      className={`modal ${showUserClientInfoModal ? "modal-open" : ""} w-full`}
     >
       <div className="modal-box">
+        <button
+          onClick={() => setShowUserClientInfoModal(null)}
+          class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-red-800"
+        >
+          ✕
+        </button>
         <h3 className="font-bold text-lg">
           Client info for: {userClientInfo?.clientName}
         </h3>
-        <p className="py-4">Press ESC key or click outside to close!</p>
-        <button onClick={() => deleteUserClient(userClientInfo?.id)}>
-          Close
-        </button>
+
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text">Select a new status</span>
+            <span class="label-text-alt">
+              Last status: {userClientInfo?.status}
+            </span>
+          </label>
+          <select
+            class="select select-bordered mb-2 w-full"
+            value={userClientState}
+            onChange={(e) => setUserClientState(e.target.value)}
+          >
+            <option disabled selected>
+              Pick one
+            </option>
+            <option>Inquiry</option>
+            <option>Follow-up</option>
+            <option>In-process</option>
+            <option>C.I</option>
+            <option>Approved</option>
+          </select>
+        </div>
+
+        <div className="flex flex-row w-fit items-center justify-between">
+          <button
+            onClick={() => updateUserClientInfo(userClientInfo?.id)}
+            className="btn btn-info text-white hover:text-black bg-emerald-500 mr-10"
+          >
+            Update Info
+          </button>
+          <button
+            onClick={() => deleteUserClient(userClientInfo?.id)}
+            className="btn btn-error hover:text-white"
+          >
+            Delete Client
+          </button>
+        </div>
       </div>
       <form method="dialog" className="modal-backdrop">
         <button onClick={() => setShowUserClientInfoModal(null)}>close</button>

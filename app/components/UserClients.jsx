@@ -25,19 +25,20 @@ const UserClients = ({ filteredClients }) => {
           </tr>
         </thead>
 
-        <tbody className="bg-emerald-300 divide-y divide-gray-200">
+        <tbody className="bg-emerald-300 divide-y-8 divide-emerald-400">
           {filteredClients.map((item) => (
             <tr
               key={item.id}
-              className="hover:bg-slate-950 hover:text-green-500 cursor-pointer"
+              className="hover:bg-emerald-900 hover:text-white cursor-pointer"
+              onClick={() => setShowUserClientInfoModal(item)}
             >
-              <td className="px-6 py-1 whitespace-no-wrap text-gray-500">
+              <td className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white">
                 {item.clientName}
               </td>
-              <td className="px-6 py-1 whitespace-no-wrap text-gray-500">
+              <td className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white">
                 {item.status}
               </td>
-              <td className="px-6 py-1 whitespace-no-wrap text-gray-500">
+              <td className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white">
                 {item.dateStated?.toDate().toLocaleString()}
               </td>
             </tr>
