@@ -1787,7 +1787,11 @@ const CtbcForm = () => {
     const updatedPdfBytes = await pdfDoc.save();
 
     // Download Updated PDF
-    download(updatedPdfBytes, `CTBC FORM -${firstName}.pdf`, "application/pdf");
+    download(
+      updatedPdfBytes,
+      `CTBC FORM -${firstName} ${lastName}.pdf`,
+      "application/pdf"
+    );
   };
   return (
     <Card
@@ -1797,7 +1801,7 @@ const CtbcForm = () => {
         flexDirection: "column",
       }}
     >
-      <h1 className="text-2xl text-center">CTBC FORM</h1>
+      <h1 className="text-2xl text-center">CTBC APPLICATION FORM</h1>
       <form>
         <Grid container>
           <Grid item xs={12} md={6}>
@@ -3291,7 +3295,11 @@ const CtbcForm = () => {
           </Stack>
         </Card>
 
-        <button type="submit" className="btn btn-neutral" onClick={modifyPdf}>
+        <button
+          type="submit"
+          className="btn btn-neutral w-full"
+          onClick={modifyPdf}
+        >
           Generate PDF
         </button>
       </form>
