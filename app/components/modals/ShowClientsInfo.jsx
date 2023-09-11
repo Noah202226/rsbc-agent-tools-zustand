@@ -42,7 +42,7 @@ const ShowClientsInfo = () => {
       <div className="modal-box">
         <button
           onClick={() => setShowUserClientInfoModal(null)}
-          class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-red-800"
+          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-red-800"
         >
           ✕
         </button>
@@ -50,15 +50,15 @@ const ShowClientsInfo = () => {
           Client info for: {userClientInfo?.clientName}
         </h3>
 
-        <div class="form-control w-full max-w-xs">
-          <label class="label">
-            <span class="label-text">Select a new status</span>
-            <span class="label-text-alt">
+        <div className="form-control w-full max-w-xs">
+          <label className="label">
+            <span className="label-text">Select a new status</span>
+            <span className="label-text-alt">
               Last status: {userClientInfo?.status}
             </span>
           </label>
           <select
-            class="select select-bordered mb-2 w-full"
+            className="select select-bordered mb-2 w-full"
             value={userClientState}
             onChange={(e) => setUserClientState(e.target.value)}
           >
