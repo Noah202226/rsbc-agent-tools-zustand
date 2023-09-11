@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { signOut } from "firebase/auth";
 
 import { auth, db } from "../firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 
 export const useUserStore = create((set, get) => ({
   // States
@@ -12,6 +12,17 @@ export const useUserStore = create((set, get) => ({
   user: null,
   auth,
 
+  // Modal states
+  // client info
+  userClientInfo: null,
+  showUserClientInfoModal: false,
+  setShowUserClientInfoModal: (client) =>
+    set((state) => ({
+      userClientInfo: client,
+      showUserClientInfoModal: !state.showUserClientInfoModal,
+    })),
+
+  //
   db,
   userClients: [],
 

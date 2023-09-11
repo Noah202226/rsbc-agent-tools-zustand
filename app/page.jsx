@@ -7,6 +7,7 @@ import { addDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import AddNewClient from "./components/modals/AddNewClient";
 import AllClients from "./components/AllClients";
+import UserClients from "./components/UserClients";
 
 export default function Home() {
   const {
@@ -18,12 +19,12 @@ export default function Home() {
 
     userClients,
     subscribeToData,
-  } = useUserStore((state) => state);
+  } = useUserStore((state) => state || {});
 
   const [addClientModal, setAddClientModal] = useState(false);
 
   // Filter clients by user UID
-  const filteredClients = userClients.filter(
+  const filteredClients = userClients?.filter(
     (client) => client.clientBy == user?.uid
   );
 
@@ -63,20 +64,17 @@ export default function Home() {
         </div>
       ) : user ? (
         <>
-          <h1 className="font-semibold text-lg">RSBC AGENT TOOLS</h1>
-          <p className="text-sm">Building with NextJs, Zustand and Tailwind</p>
-
-          <p>User: {user?.displayName}</p>
-          <p>ID: {user?.uid}</p>
-
           <AllClients />
-          <h1>Your clients only:</h1>
-          <ul>
-            {filteredClients.map((client) => {
-              console.log(client);
-              return <li key={client.id}>{client.clientName}</li>; // Adjust to display the client data structure
-            })}
-          </ul>
+          <p>User: {user?.displayName}</p>
+
+          <label
+            for="my-drawer"
+            class="btn btn-primary drawer-button absolute right-0"
+          >
+            Open drawer
+          </label>
+
+          <UserClients filteredClients={filteredClients} />
 
           {addClientModal && (
             <AddNewClient
@@ -87,11 +85,11 @@ export default function Home() {
 
           {/* <!-- Button to trigger modal --> */}
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full"
+            className="bg-emerald-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full"
             // onClick={() => setAddClientModal(true)}
             onClick={() => setAddClientModal(!addClientModal)}
           >
-            Open Modal
+            Add New Client
           </button>
         </>
       ) : (

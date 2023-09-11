@@ -13,7 +13,7 @@ const Login = () => {
     });
   };
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between p-2 container mx-auto">
       <div>
         <p>Logo</p>
       </div>

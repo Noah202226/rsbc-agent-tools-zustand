@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
+import ShowClientsInfo from "./modals/ShowClientsInfo";
 import { useUserStore } from "../store/zustand";
 
-const AllClients = () => {
-  const { userClients } = useUserStore((state) => state);
+const UserClients = ({ filteredClients }) => {
+  const { showUserClientInfoModal, setShowUserClientInfoModal } = useUserStore(
+    (state) => state || {}
+  );
 
   return (
-    <div className="p-1 bg-emerald-400">
-      <h1 className="text-2xl text-center ">RSBC All Clients</h1>
-
+    <div>
+      <h1>Your clients only:</h1>
       <table className="table">
         <thead>
           <tr>
@@ -24,7 +26,7 @@ const AllClients = () => {
         </thead>
 
         <tbody className="bg-emerald-300 divide-y divide-gray-200">
-          {userClients.map((item) => (
+          {filteredClients.map((item) => (
             <tr
               key={item.id}
               className="hover:bg-slate-950 hover:text-green-500 cursor-pointer"
@@ -42,8 +44,10 @@ const AllClients = () => {
           ))}
         </tbody>
       </table>
+
+      <ShowClientsInfo />
     </div>
   );
 };
 
-export default AllClients;
+export default UserClients;

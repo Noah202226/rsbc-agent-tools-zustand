@@ -13,8 +13,35 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="light">
       <body className={inter.className}>
-        <Navbar />
-        {children}
+        <div className="drawer drawer-end">
+          <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+
+          <div class="drawer-content">
+            <Navbar />
+            {children}
+          </div>
+
+          <div class="drawer-side">
+            <label for="my-drawer" class="drawer-overlay"></label>
+
+            <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+              {/* <!-- Sidebar content here --> */}
+              <li>
+                <a>Approved Clients</a>
+              </li>
+              <li>
+                <a>Sidebar Item 2</a>
+              </li>
+            </ul>
+
+            <label
+              for="my-drawer"
+              class="btn btn-primary drawer-button absolute bottom-1 right-0"
+            >
+              Close
+            </label>
+          </div>
+        </div>
       </body>
     </html>
   );
