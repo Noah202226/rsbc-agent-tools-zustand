@@ -1,16 +1,36 @@
 import React from "react";
+import { useUserStore } from "../store/zustand";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const Welcome = () => {
-  return (
-    <div className="flex flex-col items-center justify-center h-screen bg-emerald-500">
-      <div className="hero flex flex-col items-center h-full justify-around">
-        <h1 className="font-semibold text-6xl">RSBC AGENT TOOLS</h1>
-        <p className="text-5xl">More organize, more task you cand do</p>
-      </div>
+  const { handleLogin, auth } = useUserStore((state) => state);
 
-      {/* Section */}
-      <div className="flex">
-        <h2>Tools that help you manage your target leads</h2>
+  const login = async () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).then((user) => {
+      console.log("after log", user);
+      handleLogin(user.user);
+    });
+  };
+  return (
+    <div
+      className="hero min-h-screen"
+      style={{
+        backgroundImage:
+          "url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg)",
+      }}
+    >
+      <div className="hero-overlay bg-opacity-60"></div>
+      <div className="hero-content text-center text-neutral-content">
+        <div className="max-w-md">
+          <h1 className="mb-5 text-5xl font-bold">Hello there</h1>
+          <p className="mb-5">
+            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
+            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
+            a id nisi.
+          </p>
+          <button className="btn btn-primary">Get Started</button>
+        </div>
       </div>
     </div>
   );

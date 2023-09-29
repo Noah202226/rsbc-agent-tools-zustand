@@ -78,7 +78,7 @@ export default function Home() {
 
           <label
             for="my-drawer"
-            class="btn btn-primary drawer-button absolute right-0"
+            className="btn btn-primary drawer-button absolute right-0"
           >
             Open drawer
           </label>
