@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useUserStore } from "../store/zustand";
 import Login from "./Login";
 
@@ -7,7 +8,7 @@ const Navbar = () => {
   return (
     <div className="">
       {isLoading ? (
-        ""
+        "WHY"
       ) : user ? (
         <div className="navbar md:flex sm:block items-center justify-between bg-emerald-500 text-white">
           <div className="navbar-start">
@@ -77,12 +78,8 @@ const Navbar = () => {
                       <a>Loan Calculator</a>
                     </li>
                     <li>
-                      <a
-                        href="https://ctbc-application-form.vercel.app/"
-                        target="_blank"
-                      >
-                        Ctbc Form
-                      </a>
+                      {/* <a href="/forms/ctbc">Ctbc Form</a> */}
+                      <Link href="/forms/ctbc">Ctbc Form</Link>
                     </li>
                   </ul>
                 </details>

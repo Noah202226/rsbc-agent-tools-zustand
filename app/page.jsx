@@ -47,13 +47,13 @@ export default function Home() {
     };
   }, [user]);
 
-  useEffect(() => {
-    const unsubscribe = subscribeToData();
-    return () => {
-      // Unsubscribe when the component unmounts
-      unsubscribe();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const unsubscribe = subscribeToData();
+  //   return () => {
+  //     // Unsubscribe when the component unmounts
+  //     unsubscribe();
+  //   };
+  // }, []);
   return (
     <div className="mt-1">
       {isLoading ? (
@@ -64,7 +64,7 @@ export default function Home() {
         </div>
       ) : user ? (
         <>
-          <AllClients />
+          {/* <AllClients /> */}
           <p>User: {user?.displayName}</p>
 
           {/* <!-- Button to trigger modal --> */}

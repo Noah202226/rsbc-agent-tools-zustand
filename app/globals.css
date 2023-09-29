@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.MuiTypography-root,
+.MuiFormLabel-root {
+  color: black !important;
+}
+
+.MuiTypography-root {
+  font-size: 1rem;
+}
+
+.MuiFormControl-root {
+  font-size: 3rem;
+  text-align: start;
+  /* align-items: center; */
+}
+.steps {
+  overflow: hidden;
+}
+@media (min-width: 375px) {
+  .MuiInputBase-input,
+  .MuiStack-root,
+  .MuiFormControl-root,
+  .MuiTextField-root {
+    width: 100% !important;
+    margin-block: 0.2rem;
+  }
+}
