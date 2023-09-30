@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { signOut } from "firebase/auth";
 
 import { auth, db } from "../firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 
 export const formStore = create((set, get) => ({
   // States
@@ -47,6 +47,18 @@ export const formStore = create((set, get) => ({
         ...doc.data(),
       }));
       set({ userClients: data });
+    });
+  },
+
+  // User profile
+  userProfile: null,
+  handleUpdateProfile: (e) => set({ userProfile: e }),
+  subscribeToProfileData: (e) => {
+    const dbRef = doc(db, "users", e);
+    return onSnapshot(dbRef, (querySnapshot) => {
+      const data = querySnapshot.data();
+
+      set({ userProfile: data });
     });
   },
 

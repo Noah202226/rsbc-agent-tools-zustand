@@ -1,16 +1,27 @@
 import React from "react";
-import { useUserStore } from "../store/zustand";
+import { formStore } from "../store/useCtbcFormStore";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Image from "next/image";
+import { doc, setDoc } from "firebase/firestore";
 
 const Login = () => {
-  const { handleLogin, auth } = useUserStore((state) => state);
+  const { handleLogin, auth, db } = formStore((state) => state);
 
   const login = async () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider).then((user) => {
       console.log("after log", user);
       handleLogin(user.user);
+
+      try {
+        setDoc(doc(db, "users", user.user.uid), {
+          userID: user.user.uid,
+          pdfToken: 3,
+          agentCode: user.user.displayName,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     });
   };
   return (

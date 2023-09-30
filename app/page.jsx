@@ -19,6 +19,10 @@ export default function Home() {
 
     userClients,
     subscribeToData,
+
+    userProfile,
+    handleUserProfile,
+    subscribeToProfileData,
   } = formStore((state) => state || {});
 
   const [addClientModal, setAddClientModal] = useState(false);
@@ -34,7 +38,9 @@ export default function Home() {
       if (user) {
         // User is signed in.
         handleLogin(user);
+
         // handleIsLoading(false);
+        subscribeToProfileData(user?.uid);
       } else {
         // User is signed out.
         handleLogOut();
@@ -50,6 +56,7 @@ export default function Home() {
   useEffect(() => {
     console.log(db);
     const unsubscribe = subscribeToData();
+
     return () => {
       // Unsubscribe when the component unmounts
       unsubscribe();
@@ -67,6 +74,8 @@ export default function Home() {
         <>
           {/* <AllClients /> */}
           <p>User: {user?.displayName}</p>
+          <p>UserID: {user?.uid}</p>
+          <p>Generate PDF Token: {userProfile?.pdfToken}</p>
 
           {/* <!-- Button to trigger modal --> */}
           <button
