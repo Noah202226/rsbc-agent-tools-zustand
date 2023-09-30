@@ -1,10 +1,10 @@
 "use client";
-import { useUserStore } from "@/app/store/zustand";
+import { formStore } from "@/app/store/useCtbcFormStore";
 import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 
 const ShowClientsInfo = () => {
-  const { db } = useUserStore((state) => state);
+  const { db } = formStore((state) => state);
   const deleteUserClient = (id) => {
     deleteDoc(doc(db, "clients", id))
       .then(setShowUserClientInfoModal(null))
@@ -14,7 +14,7 @@ const ShowClientsInfo = () => {
     userClientInfo,
     showUserClientInfoModal,
     setShowUserClientInfoModal,
-  } = useUserStore((state) => state);
+  } = formStore((state) => state);
 
   const [userClientState, setUserClientState] = useState(null);
 

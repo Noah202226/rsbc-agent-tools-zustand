@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import ShowClientsInfo from "./modals/ShowClientsInfo";
-import { useUserStore } from "../store/zustand";
+import { formStore } from "../store/useCtbcFormStore";
 
 const UserClients = ({ filteredClients }) => {
-  const { showUserClientInfoModal, setShowUserClientInfoModal } = useUserStore(
+  const { showUserClientInfoModal, setShowUserClientInfoModal } = formStore(
     (state) => state || {}
   );
+
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Text successfully copied to clipboard");
+    } catch (err) {
+      alert("Failed to copy text: ", err);
+    }
+  };
 
   return (
     <div>
@@ -22,6 +31,9 @@ const UserClients = ({ filteredClients }) => {
             <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
               Date stated
             </th>
+            <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+              CTBC Form Link
+            </th>
           </tr>
         </thead>
 
@@ -30,16 +42,31 @@ const UserClients = ({ filteredClients }) => {
             <tr
               key={item.id}
               className="hover:bg-emerald-900 hover:text-white cursor-pointer"
-              onClick={() => setShowUserClientInfoModal(item)}
             >
               <td className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white">
                 {item.clientName}
               </td>
-              <td className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white">
+              <td
+                className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white"
+                onClick={() => setShowUserClientInfoModal(item)}
+              >
                 {item.status}
               </td>
               <td className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white">
                 {item.dateStated?.toDate().toLocaleString()}
+              </td>
+              <td
+                className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white tooltip"
+                data-tip="Click to copy to clipboard"
+                onClick={() =>
+                  copyToClipboard(
+                    `https://ctbc-application-form.vercel.app?id=${item.id}`
+                  )
+                }
+              >
+                {`https://ctbc-application-form.vercel.app?id=${item.id}`.substring(
+                  25
+                )}
               </td>
             </tr>
           ))}

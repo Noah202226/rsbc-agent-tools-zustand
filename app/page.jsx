@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useUserStore } from "./store/zustand";
+import { formStore } from "./store/useCtbcFormStore";
 
 import Welcome from "./components/Welcome";
 import { addDoc, doc, setDoc } from "firebase/firestore";
@@ -19,7 +19,7 @@ export default function Home() {
 
     userClients,
     subscribeToData,
-  } = useUserStore((state) => state || {});
+  } = formStore((state) => state || {});
 
   const [addClientModal, setAddClientModal] = useState(false);
 
@@ -47,13 +47,14 @@ export default function Home() {
     };
   }, [user]);
 
-  // useEffect(() => {
-  //   const unsubscribe = subscribeToData();
-  //   return () => {
-  //     // Unsubscribe when the component unmounts
-  //     unsubscribe();
-  //   };
-  // }, []);
+  useEffect(() => {
+    console.log(db);
+    const unsubscribe = subscribeToData();
+    return () => {
+      // Unsubscribe when the component unmounts
+      unsubscribe();
+    };
+  }, []);
   return (
     <div className="mt-1">
       {isLoading ? (

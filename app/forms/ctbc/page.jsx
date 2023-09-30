@@ -12,7 +12,6 @@ import PersonalInfo from "./formpages/PersonalInfo";
 import Finances from "./formpages/Finances";
 import References from "./formpages/References";
 import GeneratePdf from "./formpages/GeneratePdf";
-import Navbar from "@/app/components/Navbar";
 import { useUserStore } from "@/app/store/zustand";
 
 const CtbcForm = () => {

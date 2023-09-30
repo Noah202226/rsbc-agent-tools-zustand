@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect } from "react";
-import { useUserStore } from "../store/zustand";
+import { formStore } from "../store/useCtbcFormStore";
 
 const page = () => {
-  const { handleIsLoading, user } = useUserStore((state) => state);
+  const { handleIsLoading, user } = formStore((state) => state);
   useEffect(() => {
     handleIsLoading();
     console.log(user);

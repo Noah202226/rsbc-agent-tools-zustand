@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useUserStore } from "../store/zustand";
+import { useUserStore, formStore } from "../store/useCtbcFormStore";
 import Login from "./Login";
 
 const Navbar = () => {
-  const { user, isLoading, handleLogOut } = useUserStore((state) => state);
+  // const { user, isLoading, handleLogOut } = useUserStore((state) => state);
+  const { user, isLoading, handleLogOut } = formStore((state) => state);
   return (
     <div className="">
       {isLoading ? (

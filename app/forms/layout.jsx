@@ -6,10 +6,5 @@ export const metadata = {
 };
 
 export default function FormLayout({ children }) {
-  return (
-    <div className="drawer-content">
-      <Navbar />
-      {children}
-    </div>
-  );
+  return <div className="drawer-content">{children}</div>;
 }

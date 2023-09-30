@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { signOut } from "firebase/auth";
 
 import { auth, db } from "../firebase";
-import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 
 export const useUserStore = create((set, get) => ({
   // States

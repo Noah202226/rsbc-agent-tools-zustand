@@ -1,9 +1,9 @@
-import { useUserStore } from "@/app/store/zustand";
+import { formStore } from "@/app/store/useCtbcFormStore";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React, { useState } from "react";
 
 const AddNewClient = ({ addClientModal, setAddClientModal }) => {
-  const { user, db } = useUserStore((state) => state);
+  const { user, db } = formStore((state) => state);
 
   const saveNewClient = (data) => {
     addDoc(collection(db, "clients"), data)
