@@ -32,6 +32,8 @@ export default function Home() {
     (client) => client.clientBy == user?.uid
   );
 
+  const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
+
   useEffect(() => {
     console.log(user, filteredClients);
     const unsubscribe = auth?.onAuthStateChanged((user) => {
@@ -55,13 +57,23 @@ export default function Home() {
 
   useEffect(() => {
     console.log(db);
+    const interval = setInterval(() => {
+      const currentDate = new Date();
+      setTime({
+        hours: currentDate.getHours(),
+        minutes: currentDate.getMinutes(),
+        seconds: currentDate.getSeconds(),
+      });
+    }, 1000);
     const unsubscribe = subscribeToData();
 
     return () => {
       // Unsubscribe when the component unmounts
       unsubscribe();
+      clearInterval(interval);
     };
   }, []);
+
   return (
     <div className="mt-1">
       {isLoading ? (
@@ -73,9 +85,24 @@ export default function Home() {
       ) : user ? (
         <>
           {/* <AllClients /> */}
-          <p>User: {user?.displayName}</p>
-          <p>UserID: {user?.uid}</p>
-          <p>Generate PDF Token: {userProfile?.pdfToken}</p>
+          <div className="flex flex-row items-center justify-between p-2">
+            <div>
+              <p>User: {user?.displayName}</p>
+              <p>UserID: {user?.uid}</p>
+              <p>Generate PDF Token: {userProfile?.pdfToken}</p>
+            </div>
+
+            <div className="flex flex-col items-end justify-between">
+              <p className="font-mono text-2xl mr-2">
+                {new Date().toLocaleDateString()}
+              </p>
+              <span className="countdown font-mono text-3xl">
+                <span style={{ "--value": time.hours }}></span>h
+                <span style={{ "--value": time.minutes }}></span>m
+                <span style={{ "--value": time.seconds }}></span>s
+              </span>
+            </div>
+          </div>
 
           {/* <!-- Button to trigger modal --> */}
           <button
@@ -90,7 +117,7 @@ export default function Home() {
             for="my-drawer"
             className="btn btn-primary drawer-button absolute right-0"
           >
-            Open drawer
+            View all company transactions
           </label>
 
           <UserClients filteredClients={filteredClients} />

@@ -42,22 +42,12 @@ const Navbar = () => {
                   <a>Clients</a>
                 </li>
                 <li tabIndex={0} className="">
-                  <details>
-                    <summary>Tools</summary>
-                    <ul className="p-2">
-                      <li>
-                        <a>Loan Calculator</a>
-                      </li>
-                      <li>
-                        <a
-                          href="https://ctbc-application-form.vercel.app/"
-                          target="_blank"
-                        >
-                          Ctbc Form
-                        </a>
-                      </li>
-                    </ul>
-                  </details>
+                  <a
+                    href="https://ctbc-application-form.vercel.app/"
+                    target="_blank"
+                  >
+                    Ctbc Form
+                  </a>
                 </li>
                 <li>
                   <a>Marketing</a>
@@ -72,18 +62,13 @@ const Navbar = () => {
                 <a>Clients</a>
               </li>
               <li tabIndex={0} className="">
-                <details>
-                  <summary>Tools</summary>
-                  <ul className="p-2">
-                    <li>
-                      <a>Loan Calculator</a>
-                    </li>
-                    <li>
-                      {/* <a href="/forms/ctbc">Ctbc Form</a> */}
-                      <Link href="/forms/ctbc">Ctbc Form</Link>
-                    </li>
-                  </ul>
-                </details>
+                {/* <a href="/forms/ctbc">Ctbc Form</a> */}
+                <Link
+                  href="https://ctbc-application-form.vercel.app/"
+                  target="_blank"
+                >
+                  Ctbc Form
+                </Link>
               </li>
               <li>
                 <a>Marketing</a>
