@@ -60,11 +60,11 @@ const UserClients = ({ filteredClients }) => {
                 data-tip="Click to copy to clipboard"
                 onClick={() =>
                   copyToClipboard(
-                    `https://ctbc-application-form.vercel.app?id=${item.id}`
+                    `https://ctbc-application-form.vercel.app/?id=${item.id}`
                   )
                 }
               >
-                {`https://ctbc-application-form.vercel.app?id=${item.id}`.substring(
+                {`https://ctbc-application-form.vercel.app/?id=${item.id}`.substring(
                   25
                 )}
               </td>
