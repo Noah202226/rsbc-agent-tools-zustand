@@ -33,6 +33,8 @@ export default function Home() {
   );
 
   const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  const [period, setPeriod] = useState("");
+  const [weekday, setWeekday] = useState("");
 
   useEffect(() => {
     console.log(user, filteredClients);
@@ -59,13 +61,36 @@ export default function Home() {
     console.log(db);
     const interval = setInterval(() => {
       const currentDate = new Date();
+      const hours = currentDate.getHours();
+      const minutes = currentDate.getMinutes();
+      const seconds = currentDate.getSeconds();
+      const ampm = hours >= 12 ? "PM" : "AM";
+
+      // Convert 24-hour time to 12-hour time format
+      const formattedHours = hours % 12 || 12;
+
       setTime({
-        hours: currentDate.getHours(),
-        minutes: currentDate.getMinutes(),
-        seconds: currentDate.getSeconds(),
+        hours: formattedHours,
+        minutes: minutes,
+        seconds: seconds,
       });
+      setPeriod(ampm);
     }, 1000);
+
     const unsubscribe = subscribeToData();
+
+    const currentDate = new Date();
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const dayIndex = currentDate.getDay();
+    setWeekday(daysOfWeek[dayIndex]);
 
     return () => {
       // Unsubscribe when the component unmounts
@@ -83,7 +108,7 @@ export default function Home() {
           <span className="loading loading-dots loading-md"></span>
         </div>
       ) : user ? (
-        <>
+        <div className="p-4">
           {/* <AllClients /> */}
           <div className="flex flex-row items-center justify-between p-2">
             <div>
@@ -94,12 +119,12 @@ export default function Home() {
 
             <div className="flex flex-col items-end justify-between">
               <p className="font-mono text-2xl mr-2">
-                {new Date().toLocaleDateString()}
+                {new Date().toLocaleDateString()} {weekday}
               </p>
-              <span className="countdown font-mono text-3xl">
-                <span style={{ "--value": time.hours }}></span>h
-                <span style={{ "--value": time.minutes }}></span>m
-                <span style={{ "--value": time.seconds }}></span>s
+              <span className="countdown font-mono text-4xl">
+                <span style={{ "--value": time.hours }}></span>:
+                <span style={{ "--value": time.minutes }}></span> {period}
+                {/* <span style={{ "--value": time.seconds }}></span>s */}
               </span>
             </div>
           </div>
@@ -128,7 +153,7 @@ export default function Home() {
               setAddClientModal={setAddClientModal}
             />
           )}
-        </>
+        </div>
       ) : (
         <Welcome />
       )}

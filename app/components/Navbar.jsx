@@ -38,15 +38,12 @@ const Navbar = () => {
                 tabIndex={0}
                 className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
               >
-                <li>
-                  <a>Clients</a>
-                </li>
                 <li tabIndex={0} className="">
                   <a
-                    href="https://ctbc-application-form.vercel.app/"
+                    href="https://loan-application-form-status.vercel.app/"
                     target="_blank"
                   >
-                    Ctbc Form
+                    Application Status
                   </a>
                 </li>
                 <li>
@@ -59,15 +56,11 @@ const Navbar = () => {
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1 z-50 text-black">
               <li>
-                <a>Clients</a>
-              </li>
-              <li tabIndex={0} className="">
-                {/* <a href="/forms/ctbc">Ctbc Form</a> */}
                 <Link
-                  href="https://ctbc-application-form.vercel.app/"
                   target="_blank"
+                  href={"https://loan-application-form-status.vercel.app/"}
                 >
-                  Ctbc Form
+                  Application Status
                 </Link>
               </li>
               <li>
