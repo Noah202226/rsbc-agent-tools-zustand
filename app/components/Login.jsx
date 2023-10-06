@@ -16,7 +16,7 @@ const Login = () => {
       try {
         setDoc(doc(db, "users", user.user.uid), {
           userID: user.user.uid,
-          pdfToken: 3,
+          pdfToken: 30,
           agentCode: user.user.displayName,
         });
       } catch (e) {

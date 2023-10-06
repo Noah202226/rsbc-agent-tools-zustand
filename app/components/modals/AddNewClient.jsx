@@ -41,7 +41,7 @@ const AddNewClient = ({ addClientModal, setAddClientModal }) => {
                 clientBy: user?.uid,
                 dateStated: serverTimestamp(),
                 status: "Inquiry",
-                renderPdfToken: 3,
+                renderPdfToken: 5,
               })
             }
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full mr-4 w-full"
