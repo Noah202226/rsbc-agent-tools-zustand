@@ -25,15 +25,15 @@ const Login = () => {
     });
   };
   return (
-    <div className="navbar bg-slate-400 absolute">
+    <div className="navbar bg-slate-400 absolute bg-opacity-0">
       <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl" href="/">
+        <a className="btn btn-ghost text-white normal-case text-xl" href="/">
           RSBC AGENT APP
         </a>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          <li>
+          <li className="last-step">
             <a
               className="btn btn-primary flex flex-col items-center justify-center "
               onClick={login}

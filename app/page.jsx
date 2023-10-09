@@ -100,7 +100,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="mt-1">
+    <div className="mt-1 md:mt-0">
       {isLoading ? (
         <div className="flex text-center justify-center h-full">
           <span className="loading loading-dots loading-md"></span>
