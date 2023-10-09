@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { formStore } from "./store/useCtbcFormStore";
 
 import Welcome from "./components/Welcome";
@@ -8,6 +8,9 @@ import { db } from "./firebase";
 import AddNewClient from "./components/modals/AddNewClient";
 import AllClients from "./components/AllClients";
 import UserClients from "./components/UserClients";
+import { driver } from "driver.js";
+
+import "driver.js/dist/driver.css";
 
 export default function Home() {
   const {
@@ -27,6 +30,130 @@ export default function Home() {
 
   const [addClientModal, setAddClientModal] = useState(false);
 
+  // DriverJS
+  const dashboardDriver = driver({
+    showProgress: true,
+    showButtons: ["next", "previous", "close"],
+    steps: [
+      {
+        element: "#dashboard-tour",
+        popover: {
+          title: "Welcome to your Dashboard",
+          description: "Here, you can track and manage your clients.",
+          side: "right",
+          align: "end",
+        },
+      },
+      {
+        element: ".dashboard-agent-profile",
+        popover: {
+          title: "Your profile",
+          description:
+            "This are show your personal profile, and some important details for your account.",
+          side: "right",
+          align: "end",
+        },
+      },
+      {
+        element: ".dashboard-add-client",
+        popover: {
+          title: "Add your client",
+          description:
+            "You can use this button, to add your new clients. This will open form then fill up your client info",
+          side: "right",
+          align: "end",
+        },
+      },
+      {
+        element: ".dashboard-client-form-link",
+        popover: {
+          title: "Form Link",
+          description:
+            "After adding your new client, that client will have their personal form link.Find your new client, and just click the link to copy it, then you can send it to your client and they can fill up the form.",
+          side: "right",
+          align: "end",
+        },
+      },
+      {
+        element: ".dashboard-application-status",
+        popover: {
+          title: "Application status app",
+          description:
+            "This link will open a new web application that your can give also to your client to track the status of their application.",
+          side: "right",
+          align: "end",
+        },
+      },
+      {
+        element: ".dashboard-application-status-link",
+        popover: {
+          title: "Application status link",
+          description:
+            "This is the link you can give to your client to track their application status.You can also click it to copy it.",
+          side: "right",
+          align: "end",
+        },
+      },
+      {
+        element: ".dashboard-application-status-state",
+        popover: {
+          title: "Application Status",
+          description:
+            "Here you can update the application status of your client, Change it and this will automatically track on the application status app. This will help you to prevent the client asking for their application status.",
+          side: "right",
+          align: "end",
+        },
+      },
+      {
+        element: ".dashboard-open-sidebar-button",
+        popover: {
+          title: "Sidebar more features",
+          description:
+            "You can view here some features, like FAQ(Frequently ask question) to easily give response to your clients.",
+          side: "right",
+          align: "end",
+        },
+      },
+      {
+        element: ".dashboard-last-step",
+        popover: {
+          title: "Logout",
+          description:
+            "If you are in others device, you just can logout your account here to stay your account secure and not used by others.",
+          side: "top",
+          align: "start",
+        },
+      },
+    ],
+  });
+
+  // const welcomeDriver = driver({
+  //   showProgress: true,
+  //   showButtons: ["next", "previous", "close"],
+  //   steps: [
+  //     {
+  //       element: "#tour-example",
+  //       popover: {
+  //         title: "Animated Tour Example",
+  //         description:
+  //           "Here is the code example showing animated tour. Let's walk you through it.",
+  //         side: "right",
+  //         align: "end",
+  //       },
+  //     },
+  //     {
+  //       element: ".last-step",
+  //       popover: {
+  //         title: "Login",
+  //         description:
+  //           "First you need to login with google account, to create your personal dashboard.",
+  //         side: "top",
+  //         align: "start",
+  //       },
+  //     },
+  //   ],
+  // });
+
   // Filter clients by user UID
   const filteredClients = userClients?.filter(
     (client) => client.clientBy == user?.uid
@@ -42,7 +169,7 @@ export default function Home() {
       if (user) {
         // User is signed in.
         handleLogin(user);
-
+        dashboardDriver.drive();
         // handleIsLoading(false);
         subscribeToProfileData(user?.uid);
       } else {
@@ -111,7 +238,7 @@ export default function Home() {
         <div className="p-4">
           {/* <AllClients /> */}
           <div className="flex flex-row items-center justify-between p-2">
-            <div>
+            <div className="dashboard-agent-profile">
               <p>User: {user?.displayName}</p>
               <p>UserID: {user?.uid}</p>
               <p>Generate PDF Token: {userProfile?.pdfToken}</p>
@@ -131,7 +258,7 @@ export default function Home() {
 
           {/* <!-- Button to trigger modal --> */}
           <button
-            className="bg-emerald-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full "
+            className="bg-emerald-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full dashboard-add-client"
             // onClick={() => setAddClientModal(true)}
             onClick={() => setAddClientModal(!addClientModal)}
           >
@@ -140,9 +267,9 @@ export default function Home() {
 
           <label
             for="my-drawer"
-            className="btn btn-primary drawer-button absolute right-0"
+            className="dashboard-open-sidebar-button btn btn-primary drawer-button absolute right-4 dashboard-last-step"
           >
-            View all company transactions
+            More
           </label>
 
           <UserClients filteredClients={filteredClients} />

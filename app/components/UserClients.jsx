@@ -65,14 +65,14 @@ const UserClients = ({ filteredClients }) => {
                 </td>
 
                 <td
-                  className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white "
+                  className="dashboard-application-status-state px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white "
                   onClick={() => setShowUserClientInfoModal(item)}
                 >
                   {item.status}
                 </td>
 
                 <td
-                  className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white tooltip"
+                  className="dashboard-application-status-link px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white tooltip"
                   data-tip="Click to copy to status ID"
                   onClick={() => copyToClipboard(`${item.id}`)}
                 >
@@ -80,7 +80,7 @@ const UserClients = ({ filteredClients }) => {
                 </td>
 
                 <td
-                  className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white "
+                  className="dashboard-client-form-link px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white "
                   onClick={() =>
                     copyToClipboard(
                       `https://ctbc-application-form.vercel.app/?id=${item.id}`

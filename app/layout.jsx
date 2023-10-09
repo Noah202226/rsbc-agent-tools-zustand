@@ -1,3 +1,4 @@
+import Faq from "./components/Faq";
 import Navbar from "./components/Navbar";
 import "./globals.css";
 import { Inter } from "next/font/google";
@@ -21,30 +22,22 @@ export default function RootLayout({ children }) {
             {children}
           </div>
 
-          <div className="drawer-side">
+          <div className="drawer-side overflow-hidden">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
 
-            <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content ">
-              <div className="h-96 border-b-green-600 border-b-2">
+            <ul className="menu p-4 w-96 min-h-full bg-base-200 text-base-content ">
+              <div className="h-56 border-b-green-600 border-b-2">
                 TOP AGENTS
               </div>
               {/* <!-- Sidebar content here --> */}
-              <ul className="menu bg-base-200 w-full rounded-box">
-                <li className="menu-title">More features can be add here</li>
-                <li>
-                  <a>Item 1</a>
-                </li>
-                <li>
-                  <a>Item 2</a>
-                </li>
-                <li>
-                  <a>Item 3</a>
-                </li>
+              <ul className="menu w-full rounded-box">
+                <p className="menu-title">Frequently Ask questions</p>
+                <Faq />
               </ul>
 
               <label
                 htmlFor="my-drawer"
-                className="btn btn-primary drawer-button absolute bottom-3 right-3"
+                className="btn btn-primary drawer-button absolute top-3 right-3"
               >
                 Close
               </label>

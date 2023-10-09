@@ -4,7 +4,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Image from "next/image";
 import { doc, setDoc } from "firebase/firestore";
 
-const Login = () => {
+const Login = ({ welcomeDriver }) => {
   const { handleLogin, auth, db } = formStore((state) => state);
 
   const login = async () => {
@@ -18,7 +18,7 @@ const Login = () => {
           userID: user.user.uid,
           pdfToken: 30,
           agentCode: user.user.displayName,
-        });
+        }).then(() => welcomeDriver?.destroy());
       } catch (e) {
         console.log(e);
       }
@@ -33,13 +33,12 @@ const Login = () => {
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
-          <li className="last-step">
-            <a
-              className="btn btn-primary flex flex-col items-center justify-center "
-              onClick={login}
-            >
-              Login with
-              <Image src={"/google.svg"} width={20} height={20} />
+          <li className="last-step ">
+            <a className="btn btn-primary" onClick={login}>
+              <div className="h-full w-full flex flex-row items-center justify-between ">
+                Login
+                <Image src={"/google.svg"} width={20} height={20} />
+              </div>
             </a>
           </li>
           {/* <li>

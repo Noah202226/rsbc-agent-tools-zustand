@@ -2,10 +2,13 @@
 import Link from "next/link";
 import { useUserStore, formStore } from "../store/useCtbcFormStore";
 import Login from "./Login";
+import { driver } from "driver.js";
+import { useEffect } from "react";
 
 const Navbar = () => {
   // const { user, isLoading, handleLogOut } = useUserStore((state) => state);
   const { user, isLoading, handleLogOut } = formStore((state) => state);
+
   return (
     <div className="">
       {isLoading ? (
@@ -55,7 +58,7 @@ const Navbar = () => {
 
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1 z-50 text-black">
-              <li>
+              <li className="dashboard-application-status">
                 <Link
                   target="_blank"
                   href={"https://loan-application-form-status.vercel.app/"}
@@ -70,7 +73,7 @@ const Navbar = () => {
           </div>
 
           <div className="navbar-end">
-            <button className="btn" onClick={handleLogOut}>
+            <button className="btn dashboard-last-step" onClick={handleLogOut}>
               Logout
             </button>
           </div>
