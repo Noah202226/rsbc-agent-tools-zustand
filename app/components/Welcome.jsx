@@ -16,7 +16,7 @@ const Welcome = () => {
           <p className="mb-5 text-3xl">
             This web application can help you to easily manage your clients, and
             also provide you with some tools tools speed up your process in
-            getting client informations.
+            getting client informations. This update is from other device! 🚀
           </p>
         </div>
       </div>
