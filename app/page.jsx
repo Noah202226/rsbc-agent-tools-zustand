@@ -10,6 +10,8 @@ import AllClients from "./components/AllClients";
 import UserClients from "./components/UserClients";
 import { driver } from "driver.js";
 
+import dashboardBg from "./../public/plant-bg.jpg";
+
 import "driver.js/dist/driver.css";
 
 export default function Home() {
@@ -235,12 +237,15 @@ export default function Home() {
           <span className="loading loading-dots loading-md"></span>
         </div>
       ) : user ? (
-        <div className="p-4">
+        <div
+          className="p-4 h-screen bg-green-300"
+          style={{ backgroundImage: dashboardBg }}
+        >
           {/* <AllClients /> */}
           <div className="flex flex-row items-center justify-between p-2">
             <div className="dashboard-agent-profile">
               <p>User: {user?.displayName}</p>
-              <p>UserID: {user?.uid}</p>
+              {/* <p>UserID: {user?.uid}</p> */}
               <p>Generate PDF Token: {userProfile?.pdfToken}</p>
             </div>
 

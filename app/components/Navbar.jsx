@@ -12,12 +12,12 @@ const Navbar = () => {
   return (
     <div className="">
       {isLoading ? (
-        "WHY"
+        ""
       ) : user ? (
         <div className="navbar md:flex sm:block items-center justify-between bg-emerald-500 text-white">
           <div className="navbar-start">
             <a href="/">
-              <p className="text-xl">RSCB</p>
+              <p className="text-xl">RSBC AGENT DASHBOARD</p>
             </a>
 
             <div className="dropdown text-black navbar-end">
