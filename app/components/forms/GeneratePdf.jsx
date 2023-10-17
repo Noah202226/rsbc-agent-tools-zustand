@@ -1,12 +1,17 @@
 import { PDFDocument, StandardFonts, degrees, rgb } from "pdf-lib";
 
 import download from "downloadjs";
-import { formStore } from "../../../store/useCtbcFormStore";
+import { formStore } from "../../store/useCtbcFormStore";
 import { Stack } from "@mui/material";
 import Image from "next/image";
+import { doc, setDoc } from "firebase/firestore";
+
+import { useState } from "react";
 
 const pdfFile = "/rotated.pdf";
 const checkIcon = "/check.png";
+
+const consentPDF = "/consent.pdf";
 
 const GeneratePdf = () => {
   //   Writing Configuration
@@ -16,6 +21,9 @@ const GeneratePdf = () => {
   };
 
   const {
+    clientPdfRender,
+    agentPdfToken,
+
     desiredAmount,
     loanTerm,
     loanType,
@@ -141,15 +149,192 @@ const GeneratePdf = () => {
     setClientBestTimeToCall,
     clientHeadEmail,
     setClientHeadEmail,
+
+    clientBy,
+    clientAccessToken,
+    renderPdfToken,
+    formId,
   } = formStore((state) => state);
 
-  const modifyPdf = async (e) => {
-    e.preventDefault();
+  const [generateButton, setGenerateButton] = useState("Generate PDF");
+  const [signature, setSignature] = useState("");
+  const [signatureBuffer, setSignatureBuffer] = useState();
 
-    if (desiredAmount === "" || desiredAmount === undefined) {
-      alert("amount is required");
-      return;
+  const updateAccessToken = (e) => {
+    e.preventDefault();
+    if (agentPdfToken <= 0 || agentPdfToken === undefined) {
+      alert("Inform loan provider for assistance, Thanks");
+    } else if (clientPdfRender <= 0 || clientPdfRender === undefined) {
+      alert(
+        "Sorry this form reach it maximum render of render pfd. Inform loan provider for assistance, Thanks"
+      );
+    } else {
+      if (desiredAmount === "" || desiredAmount === undefined) {
+        alert("amount is required");
+        return;
+      }
+      if (signature === "" || signature === undefined) {
+        alert("Signature is required" + signature);
+        return;
+      }
+      setGenerateButton("Generating ...");
+
+      setDoc(
+        doc(db, "users", clientBy),
+        { pdfToken: clientAccessToken - 1 },
+        { merge: true }
+      )
+        .then(() => {
+          setDoc(
+            doc(db, "clients", formId),
+            {
+              renderPdfToken: renderPdfToken - 1,
+              formDataRecieved: {
+                desiredAmount,
+                loanTerm,
+                loanType,
+                purposeOfLoan,
+                sourceOfLoan,
+
+                gender,
+                title,
+                firstName,
+                middleName,
+                lastName,
+                aliasName,
+                birthdate,
+                placeOfBirth,
+                maritalStatus,
+
+                spouseName,
+                isSpouseWorking,
+                noOfChild,
+                noOfDependents,
+                mothersFirstname,
+                mothersMiddleName,
+                mothersLastname,
+
+                isPhResident,
+                nationality,
+                sssNo,
+                educationAttain,
+
+                residenceType,
+                otherResidensy,
+                currentHomeAddress,
+                yrAtPresentAddress,
+                mnAtPresentAddress,
+                residenceAreaCode,
+                residensePhone1,
+                residensePhone2,
+                residenseMobile,
+                fax,
+                personalEmail,
+                permanentHomeAddress,
+                permanentYrAtPresentAddress,
+                permanentMnAtPresentAddress,
+                permanentResidenceAreaCode,
+                permanentResidensePhone1,
+                permanentResidensePhone2,
+                permanentResidenseMobile,
+
+                previousHomeAddress,
+                yrsAtPreviousHomeAddress,
+                mmAtPreviousHomeAddress,
+
+                provincialHomeAddress,
+                provincialAreaCode,
+                provincialPhone1,
+                provincialPhone2,
+                provincialMobile,
+
+                sourceOfIncome,
+                isPermanent,
+                partOwner,
+                percentOfOwnership,
+                companyType,
+                othersCompanyType,
+                employerOrBusinessName,
+                natureOfBusiness,
+                yourPosition,
+                rank,
+                employerOrBusinessAddress,
+                yrsAtPresentCompany,
+                monthsAtPresentCompany,
+                officeAreaCode,
+                officePhone1,
+                officePhone2,
+                officeMobile,
+                officeFax,
+                officeEmail,
+                monthlyBasicIncome,
+                monthlyAllowance,
+                monthlyFamilyIncome,
+                monthlyHouseHoldExpense,
+                previousEmployerOrBusinessName,
+                yrsAtPreviousCompany,
+                monthsAtPreviousCompany,
+                previousCompanyAreaCode,
+                previousCompanyPhone1,
+                previousCompanyMobile,
+                spouseEmployerOrBusinessName,
+                spouseTitleOrRank,
+                spouseMonthlyIncome,
+                spouseOfficeAreaCode,
+                spouseOfficePhone1,
+                spouseOfficePhone2,
+                spouseOfficeMobile,
+                spouseYrsAtPresentCompany,
+                spouseMonthsAtPresentCompany,
+                bankName,
+                bankBranchName,
+                bankAccountType,
+                bankAccountNumber,
+                creditCardNo,
+                issuerNameOrBankName,
+                memberSinceAndLoanGranted,
+                creditCardExpiryAndLoanMaturity,
+                cardLimitAndLoanAmount,
+                personalReferenceName,
+                personalReferenceRelation,
+                personalReferenceMobile,
+                personalReferenceAddress,
+                personalReferenceName2,
+                personalReferenceRelation2,
+                personalReferenceMobile2,
+                personalReferenceAddress2,
+                personalReferenceName3,
+                personalReferenceRelation3,
+                personalReferenceMobile3,
+                personalReferenceAddress3,
+
+                clientBestTimeTocall,
+                clientHeadEmail,
+              },
+            },
+            { merge: true }
+          )
+            .then(() => {
+              console.log("access token reduced");
+              // modifyPdf();
+              setGenerateButton("Generate PDF");
+              setTimeout(() => {
+                alert("Thanks for using this form.");
+                // window.location.href = "https://rsbc-marketing.vercel.app/";
+              }, 3000);
+            })
+            .catch((e) => {
+              alert(`Error: ${e}`);
+              console.log(e);
+            });
+        })
+        .catch((e) => console.log(e));
     }
+  };
+
+  const modifyPdf = async () => {
+    const responseToConsent = await fetch(consentPDF);
+    const pdfBytesToConsent = await responseToConsent.arrayBuffer();
 
     const response = await fetch(pdfFile); // Update the file path accordingly
     const pdfBytes = await response.arrayBuffer();
@@ -157,8 +342,15 @@ const GeneratePdf = () => {
     const imageResponce = await fetch(checkIcon);
     const checkImageBytes = await imageResponce.arrayBuffer();
 
+    // Form
     const pdfDoc = await PDFDocument.load(pdfBytes, { updateMetadata: false });
     const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    // Consent
+    const pdfDocConsent = await PDFDocument.load(pdfBytesToConsent, {
+      updateMetadata: false,
+    });
+    const pdfDocConsentPages = pdfDocConsent.getPages();
+    const secondPage = pdfDocConsentPages[0];
 
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
@@ -166,6 +358,28 @@ const GeneratePdf = () => {
 
     // Embed image
     const checkImage = await pdfDoc.embedPng(checkImageBytes);
+
+    const image = await pdfDocConsent.embedPng(signatureBuffer);
+
+    // Writing in Consent
+    secondPage.drawImage(image, {
+      x: 390,
+      y: 110,
+      height: 100,
+      width: 100,
+      color: style.color,
+      // rotate: style.rotate,
+      opacity: 0.9,
+    });
+
+    secondPage.drawText(new Date().toLocaleDateString(), {
+      x: 400,
+      y: 110,
+      size: 16,
+      font: helveticaFont,
+      color: style.color,
+      // rotate: style.rotate,
+    });
 
     // Amount
     firstPage.drawText(desiredAmount.toLocaleString(), {
@@ -1628,32 +1842,29 @@ const GeneratePdf = () => {
         // Find the index of the second space character starting from after the first space
         const secondSpaceIndex = employerOrBusinessName.indexOf(
           " ",
-          firstSpaceIndex + 1
+          firstSpaceIndex + 10
         );
 
         if (secondSpaceIndex !== -1) {
           console.log("Index of the second space character:", secondSpaceIndex);
 
-          const firstline = employerOrBusinessName.slice(
-            0,
-            secondSpaceIndex + 10
-          );
+          const firstline = employerOrBusinessName.slice(0, secondSpaceIndex);
           const lastline = employerOrBusinessName.slice(
             secondSpaceIndex,
             employerOrBusinessName.length
           );
           firstPage.drawText(firstline.toLocaleUpperCase(), {
-            x: 155,
-            y: 508,
-            size: 5,
+            x: 158,
+            y: 506,
+            size: 6.5,
             font: helveticaFont,
             color: style.color,
             rotate: style.rotate,
           });
           firstPage.drawText(lastline.toUpperCase(), {
             x: 165,
-            y: 506,
-            size: 5,
+            y: 504,
+            size: 6.5,
             font: helveticaFont,
             color: style.color,
             rotate: style.rotate,
@@ -1771,7 +1982,17 @@ const GeneratePdf = () => {
       firstPage.drawText(employerOrBusinessAddress, {
         x: 280,
         y: 415,
-        size: 8.5,
+        size: 12,
+        font: helveticaFont,
+        color: style.color,
+        rotate: style.rotate,
+      });
+    } else if (employerOrBusinessAddress.length < 40) {
+      console.log("Number of spaces:", spaceCount);
+      firstPage.drawText(employerOrBusinessAddress, {
+        x: 280,
+        y: 415,
+        size: 10,
         font: helveticaFont,
         color: style.color,
         rotate: style.rotate,
@@ -1807,7 +2028,7 @@ const GeneratePdf = () => {
       firstPage.drawText(firstline.toUpperCase(), {
         x: 280,
         y: 408,
-        size: 8.5,
+        size: 8,
         font: helveticaFont,
         color: style.color,
         rotate: style.rotate,
@@ -1815,7 +2036,7 @@ const GeneratePdf = () => {
       firstPage.drawText(secondline.toUpperCase(), {
         x: 290,
         y: 406,
-        size: 8.5,
+        size: 8,
         font: helveticaFont,
         color: style.color,
         rotate: style.rotate,
@@ -1823,7 +2044,7 @@ const GeneratePdf = () => {
       firstPage.drawText(lastline.toUpperCase(), {
         x: 300,
         y: 406,
-        size: 8.5,
+        size: 8,
         font: helveticaFont,
         color: style.color,
         rotate: style.rotate,
@@ -2380,7 +2601,7 @@ const GeneratePdf = () => {
     });
 
     // Client Contact
-    firstPage.drawText(`CLIENT MOBILE NUMBER: ${permanentResidenseMobile}`, {
+    firstPage.drawText(`CLIENT MOBILE NUMBER: ${residenseMobile}`, {
       x: 25,
       y: 220,
       size: 18,
@@ -2410,6 +2631,7 @@ const GeneratePdf = () => {
 
     // Save modifications
     const updatedPdfBytes = await pdfDoc.save();
+    const updateConsentBytes = await pdfDocConsent.save();
 
     // Download Updated PDF
     download(
@@ -2417,6 +2639,12 @@ const GeneratePdf = () => {
       `CTBC FORM -${firstName} ${lastName}.pdf`,
       "application/pdf"
     );
+    download(
+      updateConsentBytes,
+      `CTBC Consent form -${firstName} ${lastName}.pdf`,
+      "application/pdf"
+    );
+    setGenerateButton("Generate PDF");
   };
   return (
     <div className="w-full">
@@ -2450,7 +2678,6 @@ const GeneratePdf = () => {
             value={clientBestTimeTocall}
             onChange={(e) => setClientBestTimeToCall(e.target.value)}
             className="input input-bordered w-full max-w-xs"
-            required
           />
         </div>
 
@@ -2469,13 +2696,64 @@ const GeneratePdf = () => {
         </div>
       </Stack>
 
+      <Stack
+        flexDirection={{ xs: "column", md: "row" }}
+        my={5}
+        width={"100%"}
+        justifyContent={"space-around"}
+      >
+        {/* <div className="form-control">
+          <label className="input-group input-group-vertical">
+            <span>Client Mobile No.</span>
+            <input
+              type="number"
+              placeholder="Mobile no...."
+              className="input input-bordered"
+              value={clientMobileNo}
+              onChange={(e) => setClientMobileNo(e.target.value)}
+            />
+          </label>
+        </div> */}
+
+        <div className="form-control w-full max-w-xs mt-8">
+          <label className="label">
+            <span className="label-text">Select Signature</span>
+            <span className="label-text-alt">(*.png)</span>
+          </label>
+          <input
+            id="signature"
+            type="file"
+            title="Select Signature"
+            className="file-input file-input-bordered file-input-primary w-full max-w-xs"
+            value={signature}
+            onChange={(e) => {
+              setSignature(e.target.value);
+
+              e.target.files
+                .item(0)
+                .arrayBuffer()
+                .then((res) => {
+                  setSignatureBuffer(res);
+                });
+            }}
+          />
+        </div>
+      </Stack>
+
       <button
         type="submit"
-        className="btn btn-lg btn-neutral w-1/2 my-16"
-        onClick={modifyPdf}
+        className="btn btn-lg btn-neutral w-1/2 my-8"
+        onClick={updateAccessToken}
       >
-        Generate PDF
-        <Image className="ml-4" src={"/inbox.svg"} width={40} height={40} />
+        {generateButton}
+        <Image
+          className="ml-4"
+          src={"/inbox.svg"}
+          width={40}
+          height={40}
+          alt="pdfDownload"
+        />
+        ({clientPdfRender} -{agentPdfToken})
       </button>
     </div>
   );

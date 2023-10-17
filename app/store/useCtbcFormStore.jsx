@@ -62,6 +62,14 @@ export const formStore = create((set, get) => ({
     });
   },
 
+  clientFormData: "",
+  handleClientFormData: (e) => set({ clientFormData: e }),
+
+  agentPdfToken: "",
+  handleAgentPdfToken: (e) => set({ agentPdfToken: e }),
+  clientPdfRender: "",
+  handleClientPdfRender: (e) => set({ clientPdfRender: e }),
+
   // Form 1 state
   desiredAmount: "",
   handleDesiredAmount: (e) => set({ desiredAmount: parseInt(e, 10) }),

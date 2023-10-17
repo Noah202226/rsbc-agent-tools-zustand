@@ -13,6 +13,7 @@ import { driver } from "driver.js";
 import dashboardBg from "./../public/plant-bg.jpg";
 
 import "driver.js/dist/driver.css";
+import CtbcFormData from "./components/modals/CtbcFormData";
 
 export default function Home() {
   const {
@@ -26,7 +27,7 @@ export default function Home() {
     subscribeToData,
 
     userProfile,
-    handleUserProfile,
+    handleAgentPdfToken,
     subscribeToProfileData,
   } = formStore((state) => state || {});
 
@@ -174,6 +175,7 @@ export default function Home() {
         dashboardDriver.drive();
         // handleIsLoading(false);
         subscribeToProfileData(user?.uid);
+        handleAgentPdfToken(userProfile?.pdfToken);
       } else {
         // User is signed out.
         handleLogOut();
@@ -285,6 +287,8 @@ export default function Home() {
               setAddClientModal={setAddClientModal}
             />
           )}
+
+          <CtbcFormData />
         </div>
       ) : (
         <Welcome />

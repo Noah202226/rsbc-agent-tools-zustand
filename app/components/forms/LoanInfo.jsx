@@ -10,7 +10,7 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import { formStore } from "../../../store/useCtbcFormStore";
+import { formStore } from "../../store/useCtbcFormStore";
 import { useEffect } from "react";
 
 const LoanInfo = () => {

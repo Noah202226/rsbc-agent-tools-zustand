@@ -5,9 +5,12 @@ import { formStore } from "../store/useCtbcFormStore";
 const UserClients = ({ filteredClients }) => {
   const [gettingData, setGettingData] = useState(true);
 
-  const { showUserClientInfoModal, setShowUserClientInfoModal } = formStore(
-    (state) => state || {}
-  );
+  const {
+    showUserClientInfoModal,
+    setShowUserClientInfoModal,
+    handleClientFormData,
+    handleClientPdfRender,
+  } = formStore((state) => state || {});
 
   const copyToClipboard = async (text) => {
     try {
@@ -43,6 +46,9 @@ const UserClients = ({ filteredClients }) => {
             </th>
             <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
               CTBC Form Link
+            </th>
+            <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+              CTBC Form Data Recieved
             </th>
             <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
               Date stated
@@ -92,6 +98,30 @@ const UserClients = ({ filteredClients }) => {
                   )}
                 </td>
 
+                <td
+                  className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white"
+                  onClick={
+                    item.formDataRecieved === undefined ||
+                    item.formDataRecieved === ""
+                      ? () => console.log("nothing")
+                      : () => {
+                          document.getElementById("my_modal_3")?.showModal();
+                          handleClientFormData(item.formDataRecieved);
+                          handleClientPdfRender(item.renderPdfToken);
+                        }
+                  }
+                  style={
+                    item.formDataRecieved === undefined ||
+                    item.formDataRecieved === ""
+                      ? { color: "grey" }
+                      : { color: "firebrick" }
+                  }
+                >
+                  {item.formDataRecieved === undefined ||
+                  item.formDataRecieved === ""
+                    ? "Data empty"
+                    : `Data recieved`}
+                </td>
                 <td className="px-6 py-1 whitespace-no-wrap text-gray-500 hover:text-white">
                   {item.dateStated?.toDate().toLocaleString()}
                 </td>

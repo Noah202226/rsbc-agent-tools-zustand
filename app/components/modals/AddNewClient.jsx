@@ -42,6 +42,7 @@ const AddNewClient = ({ addClientModal, setAddClientModal }) => {
                 dateStated: serverTimestamp(),
                 status: "Inquiry",
                 renderPdfToken: 5,
+                formDataRecieved: "",
               })
             }
             className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full mr-4 w-full"
