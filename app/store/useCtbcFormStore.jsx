@@ -62,13 +62,25 @@ export const formStore = create((set, get) => ({
     });
   },
 
+  // Form Data
+  clientDataID: "",
+  handleClientDataID: (e) => set({ clientDataID: e }),
+
   clientFormData: "",
   handleClientFormData: (e) => set({ clientFormData: e }),
+
+  clientBy: "",
+  handleClientBy: (e) => set({ clientBy: e }),
 
   agentPdfToken: "",
   handleAgentPdfToken: (e) => set({ agentPdfToken: e }),
   clientPdfRender: "",
   handleClientPdfRender: (e) => set({ clientPdfRender: e }),
+
+  clientSignature: "",
+  handleClientSignature: (e) => set({ clientSignature: e }),
+  clientSignatureImage: "",
+  handleClientSignatureImage: (e) => set({ clientSignatureImage: e }),
 
   // Form 1 state
   desiredAmount: "",

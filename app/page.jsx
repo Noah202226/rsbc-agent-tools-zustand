@@ -29,6 +29,8 @@ export default function Home() {
     userProfile,
     handleAgentPdfToken,
     subscribeToProfileData,
+
+    handleClientBy,
   } = formStore((state) => state || {});
 
   const [addClientModal, setAddClientModal] = useState(false);
@@ -176,6 +178,7 @@ export default function Home() {
         // handleIsLoading(false);
         subscribeToProfileData(user?.uid);
         handleAgentPdfToken(userProfile?.pdfToken);
+        handleClientBy(userProfile?.uid);
       } else {
         // User is signed out.
         handleLogOut();
@@ -247,7 +250,7 @@ export default function Home() {
           <div className="flex flex-row items-center justify-between p-2">
             <div className="dashboard-agent-profile">
               <p>User: {user?.displayName}</p>
-              {/* <p>UserID: {user?.uid}</p> */}
+              <p>UserID: {user?.uid}</p>
               <p>Generate PDF Token: {userProfile?.pdfToken}</p>
             </div>
 

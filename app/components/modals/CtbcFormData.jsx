@@ -7,10 +7,16 @@ import References from "../forms/References";
 import GeneratePdf from "../forms/GeneratePdf";
 import { Card } from "@mui/material";
 
+import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { storage } from "@/app/firebase";
+
 const CtbcFormData = () => {
   const {
+    clientDataID,
+    handleClientSignatureImage,
     clientFormData,
     agentPdfToken,
+    clientBy,
 
     handleDesiredAmount,
     handleLoanTerm,
@@ -159,6 +165,8 @@ const CtbcFormData = () => {
     setClientMobileNo,
     setClientBestTimeToCall,
     setClientHeadEmail,
+
+    handleClientSignature,
   } = formStore((state) => state);
 
   useEffect(() => {
@@ -176,7 +184,7 @@ const CtbcFormData = () => {
     setMiddleName(clientFormData?.middleName);
     setLastName(clientFormData?.lastName);
 
-    setAliasName(clientFormData?.alias);
+    setAliasName(clientFormData?.aliasName);
     setBirthDate(clientFormData?.birthdate);
     setPlaceOfBirth(clientFormData?.placeOfBirth);
 
@@ -201,7 +209,7 @@ const CtbcFormData = () => {
     setRentPerMonth(clientFormData?.rentPerMonth);
 
     setIsOtherResidency(clientFormData?.isOtherResidency);
-    setotherResidensy(clientFormData?.otherResidency);
+    setotherResidensy(clientFormData?.otherResidensy);
 
     setCurrentHomeAddress(clientFormData?.currentHomeAddress);
 
@@ -214,10 +222,10 @@ const CtbcFormData = () => {
     setResidenseMobile(clientFormData?.residenseMobile);
 
     setFax(clientFormData?.fax);
-    setPersonalEmail(clientFormData?.pesonalEmail);
+    setPersonalEmail(clientFormData?.personalEmail);
     setPermanentHomeAddress(clientFormData?.permanentHomeAddress);
-    setpermanentYrAtPresentAddress(clientFormData?.permanentYrAtPresent);
-    setpermanentMnAtPresentAddress(clientFormData?.permanentMnAtPresent);
+    setpermanentYrAtPresentAddress(clientFormData?.permanentYrAtPresentAddress);
+    setpermanentMnAtPresentAddress(clientFormData?.permanentMnAtPresentAddress);
 
     setPermanentResidenceAreaCode(clientFormData?.permanentResidenceAreaCode);
     setPermanentResidensePhone1(clientFormData?.permanentResidensePhone1);
@@ -226,7 +234,7 @@ const CtbcFormData = () => {
 
     setPreviousHomeAddress(clientFormData?.previousHomeAddress);
     setYrsAtPreviousHomeAddress(clientFormData?.yrsAtPreviousHomeAddress);
-    setMmAtPreviousHomeAddress(clientFormData?.mnAtPreviousHomeAddress);
+    setMmAtPreviousHomeAddress(clientFormData?.mmAtPreviousHomeAddress);
 
     setProvincialHomeAddress(clientFormData?.provincialHomeAddress);
     setProvincialAreaCode(clientFormData?.provincialAreaCode);
@@ -310,13 +318,24 @@ const CtbcFormData = () => {
     setPersonalReferenceAddress2(clientFormData?.personalReferenceAddress2);
 
     setPersonalReferenceName3(clientFormData?.personalReferenceName3);
-    setPersonalReferenceRelation3(clientFormData?.personalRefenceRelation3);
+    setPersonalReferenceRelation3(clientFormData?.personalReferenceRelation3);
     setPersonalReferenceMobile3(clientFormData?.personalReferenceMobile3);
     setPersonalReferenceAddress3(clientFormData?.personalReferenceAddress3);
 
     setClientMobileNo(clientFormData?.clientMobileNo);
     setClientBestTimeToCall(clientFormData?.clientBestTimeTocall);
     setClientHeadEmail(clientFormData?.clientHeadEmail);
+
+    handleClientSignature(clientFormData?.clientSignature);
+
+    listAll(ref(storage, "client-signatures")).then((res) => {
+      console.log(clientFormData?.clientSignature);
+      res.items
+        .filter((item) => item.name == clientFormData?.clientSignature)
+        .forEach((item) =>
+          getDownloadURL(item).then((url) => handleClientSignatureImage(url))
+        );
+    });
   }, [clientFormData]);
 
   const [stepsdata, setStepsdata] = useState([
@@ -428,7 +447,10 @@ const CtbcFormData = () => {
             <h1 className="text-3xl sm:text-5xl text-center my-2">
               CTBC APPLICATION FORM
             </h1>
-            <h3 className="font-bold text-lg">Your client data!</h3>
+            <h3 className="font-bold text-lg">
+              Your client data! {clientDataID}
+              Client by: {clientBy}
+            </h3>
 
             <div className="flex flex-col sm:flex-col  w-full">
               <ul className="steps my-5">

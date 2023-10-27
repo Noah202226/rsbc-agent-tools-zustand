@@ -7,6 +7,7 @@ import Image from "next/image";
 import { doc, setDoc } from "firebase/firestore";
 
 import { useState } from "react";
+import { db } from "@/app/firebase";
 
 const pdfFile = "/rotated.pdf";
 const checkIcon = "/check.png";
@@ -21,8 +22,12 @@ const GeneratePdf = () => {
   };
 
   const {
+    userProfile,
     clientPdfRender,
     agentPdfToken,
+    clientSignatureImage,
+    clientSignature,
+    clientDataID,
 
     desiredAmount,
     loanTerm,
@@ -151,9 +156,8 @@ const GeneratePdf = () => {
     setClientHeadEmail,
 
     clientBy,
-    clientAccessToken,
+
     renderPdfToken,
-    formId,
   } = formStore((state) => state);
 
   const [generateButton, setGenerateButton] = useState("Generate PDF");
@@ -162,9 +166,10 @@ const GeneratePdf = () => {
 
   const updateAccessToken = (e) => {
     e.preventDefault();
-    if (agentPdfToken <= 0 || agentPdfToken === undefined) {
-      alert("Inform loan provider for assistance, Thanks");
-    } else if (clientPdfRender <= 0 || clientPdfRender === undefined) {
+    // if (agentPdfToken <= 0 || agentPdfToken === undefined) {
+    //   alert("Inform loan provider for assistance, Thanks");
+    // } else
+    if (clientPdfRender <= 0 || clientPdfRender === undefined) {
       alert(
         "Sorry this form reach it maximum render of render pfd. Inform loan provider for assistance, Thanks"
       );
@@ -173,22 +178,26 @@ const GeneratePdf = () => {
         alert("amount is required");
         return;
       }
-      if (signature === "" || signature === undefined) {
-        alert("Signature is required" + signature);
-        return;
-      }
+      // if (signature === "" || signature === undefined) {
+      //   alert("Signature is required" + signature);
+      //   return;
+      // }
       setGenerateButton("Generating ...");
 
+      console.log(clientBy);
+      console.log(userProfile);
       setDoc(
         doc(db, "users", clientBy),
-        { pdfToken: clientAccessToken - 1 },
+        { pdfToken: userProfile.pdfToken - 1 },
         { merge: true }
       )
         .then(() => {
+          console.log("updating client data");
+          console.log(clientDataID);
           setDoc(
-            doc(db, "clients", formId),
+            doc(db, "clients", clientDataID),
             {
-              renderPdfToken: renderPdfToken - 1,
+              renderPdfToken: clientPdfRender - 1,
               formDataRecieved: {
                 desiredAmount,
                 loanTerm,
@@ -316,7 +325,7 @@ const GeneratePdf = () => {
           )
             .then(() => {
               console.log("access token reduced");
-              // modifyPdf();
+              modifyPdf();
               setGenerateButton("Generate PDF");
               setTimeout(() => {
                 alert("Thanks for using this form.");
@@ -328,7 +337,7 @@ const GeneratePdf = () => {
               console.log(e);
             });
         })
-        .catch((e) => console.log(e));
+        .catch((e) => console.log("Error on Firebase:", e));
     }
   };
 
@@ -2646,6 +2655,7 @@ const GeneratePdf = () => {
     );
     setGenerateButton("Generate PDF");
   };
+
   return (
     <div className="w-full">
       <Stack
@@ -2738,6 +2748,29 @@ const GeneratePdf = () => {
             }}
           />
         </div>
+
+        {console.log(clientSignatureImage)}
+        {console.log(clientSignature)}
+        {clientSignatureImage ? (
+          <>
+            <img
+              src={clientSignatureImage}
+              alt="Client Signature Image"
+              width={50}
+              height={50}
+            />
+            <a
+              href={clientSignatureImage}
+              target="_blank"
+              download={true}
+              className="btn"
+            >
+              Download Signature
+            </a>
+          </>
+        ) : (
+          "No Image"
+        )}
       </Stack>
 
       <button
@@ -2753,7 +2786,7 @@ const GeneratePdf = () => {
           height={40}
           alt="pdfDownload"
         />
-        ({clientPdfRender} -{agentPdfToken})
+        ({clientPdfRender} - {userProfile.pdfToken})
       </button>
     </div>
   );

@@ -10,6 +10,9 @@ const UserClients = ({ filteredClients }) => {
     setShowUserClientInfoModal,
     handleClientFormData,
     handleClientPdfRender,
+    handleClientDataID,
+    handleClientBy,
+    userProfile,
   } = formStore((state) => state || {});
 
   const copyToClipboard = async (text) => {
@@ -108,6 +111,8 @@ const UserClients = ({ filteredClients }) => {
                           document.getElementById("my_modal_3")?.showModal();
                           handleClientFormData(item.formDataRecieved);
                           handleClientPdfRender(item.renderPdfToken);
+                          handleClientDataID(item.id);
+                          handleClientBy(userProfile?.userID);
                         }
                   }
                   style={
